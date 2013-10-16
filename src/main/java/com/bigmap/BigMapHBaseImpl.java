@@ -1,7 +1,5 @@
 package com.bigmap;
 
-import com.bigmap.conf.*;
-import com.bigmap.hbase.*;
 import com.google.common.collect.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.*;
@@ -9,17 +7,20 @@ import org.apache.hadoop.hbase.util.*;
 import java.io.*;
 import java.util.*;
 
-public class BigMapImpl<K, V> implements BigMap<K, V> {
+import static com.bigmap.conf.BigMapConfiguration.getHBaseAdmin;
+import static com.bigmap.hbase.BigMapHBase.createOrGet;
+
+public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
 
     private static final String COLUMN_FAMILY = "BIGMAP";
     private static final String QUALIFIER = "VALUE";
     private HTable theHTable;
     private String theTableName;
 
-    public BigMapImpl(final String aTableName)
+    public BigMapHBaseImpl(final String aTableName)
     {
         theTableName = aTableName;
-        theHTable = BigMapHBase.createOrGet(aTableName);
+        theHTable = createOrGet(aTableName);
     }
 
     @Override
@@ -153,7 +154,7 @@ public class BigMapImpl<K, V> implements BigMap<K, V> {
     {
         try
         {
-            BigMapConfiguration.getHBaseAdmin().deleteColumn(theTableName, "VALUE");
+            getHBaseAdmin().deleteColumn(theTableName, "VALUE");
         }
         catch (IOException e)
         {
