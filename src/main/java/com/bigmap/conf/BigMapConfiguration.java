@@ -9,7 +9,7 @@ public class BigMapConfiguration {
     private static final String COLUMN_FAMILY = "BIGMAP";
     private static Configuration theConfiguration;
 
-    public BigMapConfiguration(Configuration aConfiguration)
+    public static void setConfiguration(Configuration aConfiguration)
     {
         theConfiguration = aConfiguration;
     }

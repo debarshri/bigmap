@@ -11,6 +11,13 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class BigMapsTest {
 
+    @Before
+    public void setUp()
+    {
+        Configuration myEntries = HBaseConfiguration.create();
+        BigMapConfiguration.setConfiguration(myEntries);
+    }
+
     @Ignore
     @Test
     public void shouldCreateBigMap() throws Exception
@@ -28,12 +35,10 @@ public class BigMapsTest {
         assertThat(myBigMap).isNull();
     }
 
+    @Ignore
     @Test
     public void shouldAddValues()
     {
-        Configuration myEntries = HBaseConfiguration.create();
-        BigMapConfiguration myConfiguration = new BigMapConfiguration(myEntries);
-
         Map<String,String> myMap = BigMaps.createBigMap("TestMap");
 
         myMap.put("key1","value1");
@@ -47,5 +52,14 @@ public class BigMapsTest {
 
         assertThat(myIntegerMap.get(myTestObject)).isEqualTo(1);
 
+    }
+
+    @Ignore
+    @Test
+    public void shouldReturnSize()
+    {
+        Map<TestObject,Integer> myIntegerMap = BigMaps.createBigMap("testIntegerMap");
+
+        assertThat(myIntegerMap).hasSize(3);
     }
 }

@@ -29,8 +29,6 @@ public class BigMapHBase {
         }
 
         return null;
-
     }
-
 }
 
