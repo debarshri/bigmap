@@ -1,5 +1,7 @@
-package com.bigmap;
+package com.bigmap.hbase;
 
+import com.bigmap.*;
+import com.bigmap.utils.*;
 import com.google.common.collect.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.*;
@@ -7,19 +9,18 @@ import org.apache.hadoop.hbase.util.*;
 import java.io.*;
 import java.util.*;
 
-import static com.bigmap.conf.BigMapConfiguration.getHBaseAdmin;
 import static com.bigmap.hbase.BigMapHBase.createOrGet;
+import static com.bigmap.utils.BigMapUtils.deserialize;
+import static com.bigmap.utils.BigMapUtils.serialize;
 
 public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
 
     private static final String COLUMN_FAMILY = "BIGMAP";
     private static final String QUALIFIER = "VALUE";
     private HTable theHTable;
-    private String theTableName;
 
     public BigMapHBaseImpl(final String aTableName)
     {
-        theTableName = aTableName;
         theHTable = createOrGet(aTableName);
     }
 
@@ -85,8 +86,8 @@ public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
-                if (Bytes.toString(myResult.getValue(Bytes.toBytes("BIGMAP"),
-                                                     Bytes.toBytes("VALUE"))).equals(serialize(o)))
+                if (deserialize(myResult.getValue(Bytes.toBytes("BIGMAP"),
+                                                  Bytes.toBytes("VALUE"))).equals(serialize(o)))
                 {
                     myScanner.close();
                     return true;
@@ -110,7 +111,7 @@ public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
         {
             Result myResult = theHTable.get(myGet);
             return (V) deserialize(myResult.getValue(Bytes.toBytes("BIGMAP"),
-                                         Bytes.toBytes("VALUE")));
+                                                     Bytes.toBytes("VALUE")));
         }
         catch (IOException e)
         {
@@ -154,7 +155,16 @@ public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
     {
         try
         {
-            getHBaseAdmin().deleteColumn(theTableName, "VALUE");
+            ResultScanner myScanner = theHTable.getScanner(Bytes.toBytes("BIGMAP"),
+                                                           Bytes.toBytes("VALUE"));
+
+            for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
+            {
+                Delete myDelete = new Delete(myResult.getRow());
+                myDelete.deleteColumns(Bytes.toBytes(COLUMN_FAMILY), Bytes.toBytes(QUALIFIER));
+
+                theHTable.delete(myDelete);
+            }
         }
         catch (IOException e)
         {
@@ -180,37 +190,4 @@ public class BigMapHBaseImpl<K, V> implements BigMap<K, V> {
         return Sets.newHashSet();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private static byte[] serialize(Object obj) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ObjectOutputStream o;
-        try
-        {
-            o = new ObjectOutputStream(b);
-            o.writeObject(obj);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return b.toByteArray();
-    }
-
-    private static Object deserialize(byte[] bytes) {
-        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
-        ObjectInputStream o;
-        try
-        {
-            o = new ObjectInputStream(b);
-            return o.readObject();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

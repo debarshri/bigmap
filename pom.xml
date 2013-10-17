@@ -57,6 +57,11 @@
             <artifactId>hadoop-core</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.10.1</version>
+        </dependency>
     </dependencies>
 
     
