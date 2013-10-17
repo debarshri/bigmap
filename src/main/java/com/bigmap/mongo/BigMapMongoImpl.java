@@ -5,9 +5,8 @@ import com.mongodb.*;
 
 import java.util.*;
 
-import static com.bigmap.conf.BigMapConfiguration.getMongoDBObject;
-import static com.bigmap.utils.BigMapUtils.deserialize;
-import static com.bigmap.utils.BigMapUtils.serialize;
+import static com.bigmap.conf.BigMapConfiguration.*;
+import static com.bigmap.utils.BigMapUtils.*;
 
 public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
     private String theDB;
@@ -106,7 +105,8 @@ public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
     private static Object mongoDeserialize(String aSerializeObject)
     {
         String[] mySplit = aSerializeObject
-                .substring(1,aSerializeObject.length() - 1)
+                .substring(1,
+                           aSerializeObject.length() - 1)
                 .split(",");
 
         byte [] myBytes = new byte[mySplit.length];
