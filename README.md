@@ -75,8 +75,6 @@ import org.apache.hadoop.hbase.*;
 
 import java.util.*;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 public class BigMapExample {
 
     public static void main(String[] args)
