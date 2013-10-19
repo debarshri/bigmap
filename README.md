@@ -1,9 +1,11 @@
 bigmap
 ======
 
-A java map implementation that wraps hbase, cassandra and mongodb.
-Allows people to cache objects in these NoSQL database.
-It makes migration of NoSQL databases easy.
+A java map implementation that wraps hbase, cassandra and mongodb.\\
+Allows people to cache objects in these NoSQL database via the native map interface.\\
+It makes migration of NoSQL databases easy.\\
+
+Giving Hazelcast run for its money.
 
 Prerequisite
 ==========
@@ -11,6 +13,9 @@ Prerequisite
 You need a running hbase cluster, mongodb or cassandra and Java 1.7 and above.
 
 The following example is for HBase-0.90.6 version.
+
+Note : BigMap is optimized if you HBase is optimized. \\
+It is not a magic bullet, it helps embedding these NoSQL seamlessly in java projects
 
 
 Example
