@@ -32,6 +32,9 @@ Installation
     <version>1.1</version>
 </dependency>
 ```
+
+- For non-maven users
+    - Download the [released version](https://github.com/debarshri/bigmap/releases) and export the jar in the classpath   
 Example
 =======
 
