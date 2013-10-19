@@ -5,7 +5,7 @@ A java map implementation that wraps hbase, cassandra and mongodb.
 Allows people to cache objects in these NoSQL database via the native map interface.
 It makes migration of NoSQL databases easy.
 
-Giving Hazelcast run for its money.
+The idea is also to give Hazelcast run for its money.
 
 Prerequisite
 ==========
