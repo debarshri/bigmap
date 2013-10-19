@@ -115,7 +115,7 @@ public class BigMapExample {
 
         Map<TestObject,Integer> myIntegerMap = BigMaps.createBigHBaseMap("testIntegerMap");
 
-        TestObject myTestObject = new TestObject();
+        TestObject myTestObject = new TestObject(1);
         
         myIntegerMap.put(myTestObject,1);
     }
