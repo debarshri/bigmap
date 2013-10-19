@@ -109,6 +109,45 @@ public class BigMapsTest {
         assertThat(myIntegerMap.containsKey(new TestObject(2))).isFalse();
     }
 
+    @Test
+    public void shouldReturnKeySet()
+    {
+        Map<TestObject,Integer> myIntegerMap = BigMaps.createBigHBaseMap("testIntegerMap");
+        TestObject myTestObject = new TestObject(1);
+        TestObject myTestObject2 = new TestObject(2);
+
+        myIntegerMap.put(myTestObject,1);
+        myIntegerMap.put(myTestObject2,3);
+
+        assertThat(myIntegerMap.keySet()).hasSize(2);
+    }
+
+    @Test
+    public void shouldReturnValueSet()
+    {
+        Map<TestObject,Integer> myIntegerMap = BigMaps.createBigHBaseMap("testIntegerMap");
+        TestObject myTestObject = new TestObject(1);
+        TestObject myTestObject2 = new TestObject(2);
+
+        myIntegerMap.put(myTestObject,1);
+        myIntegerMap.put(myTestObject2,3);
+
+        assertThat(myIntegerMap.values()).hasSize(2);
+    }
+
+    @Test
+    public void shouldReturnEntrySet()
+    {
+        Map<TestObject,Integer> myIntegerMap = BigMaps.createBigHBaseMap("testIntegerMap");
+        TestObject myTestObject = new TestObject(1);
+        TestObject myTestObject2 = new TestObject(2);
+
+        myIntegerMap.put(myTestObject,1);
+        myIntegerMap.put(myTestObject2,3);
+
+        assertThat(myIntegerMap.entrySet()).hasSize(2);
+    }
+
     @Ignore
     @Test
     public void shouldClearMap()

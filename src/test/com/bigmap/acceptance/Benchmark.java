@@ -4,13 +4,14 @@ import com.bigmap.*;
 import org.apache.hadoop.hbase.*;
 import org.junit.*;
 
+import java.util.*;
+
 import static com.bigmap.conf.BigMapConfiguration.setConfiguration;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class Benchmark {
 
-    @Test
-    public void HBaseMapBenchmark()
+    public static void main(String[] args)
     {
         setConfiguration(HBaseConfiguration.create());
 
@@ -22,7 +23,7 @@ public class Benchmark {
 
         System.out.println(String.format("Time taken to load 10000 records - %ds",(endTime - startTime)/1000));
 
-        BigMap<String, String> myBigHBaseMap = BigMaps.createBigHBaseMap(myTableMap);
+        Map<String, String> myBigHBaseMap = BigMaps.createBigHBaseMap(myTableMap);
 
         long startTime2 = System.currentTimeMillis();
 

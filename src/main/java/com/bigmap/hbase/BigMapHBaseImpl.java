@@ -1,5 +1,6 @@
 package com.bigmap.hbase;
 
+import com.bigmap.utils.*;
 import com.google.common.collect.*;
 import org.apache.hadoop.hbase.client.*;
 
@@ -84,10 +85,8 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
-                if (deserialize(myResult.getValue(toBytes(COLUMN_FAMILY),
-                                                  toBytes(QUALIFIER))).equals(o))
+                if (deSerializeAndScan(o, myScanner, myResult))
                 {
-                    myScanner.close();
                     return true;
                 }
             }
@@ -161,10 +160,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
         for(Map.Entry<? extends K,? extends V> aEntry : aMap.entrySet() )
         {
-            Put myPut = new Put(serialize(aEntry.getKey()));
-            myPut.add(toBytes(COLUMN_FAMILY),
-                      toBytes(QUALIFIER), serialize(aEntry.getValue()));
-            myPuts.add(myPut);
+            updatePuts(myPuts, aEntry);
         }
 
         try
@@ -202,19 +198,95 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
     @Override
     public Set<K> keySet()
     {
-        return Sets.newHashSet();  //To change body of implemented methods use File | Settings | File Templates.
+        Set<K> myKeys = Sets.newHashSet();
+
+        try
+        {
+            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
+                                                           toBytes(QUALIFIER));
+
+            for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
+            {
+                myKeys.add((K) deserialize(myResult.getRow()));
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return myKeys;
     }
 
     @Override
     public Collection<V> values()
     {
-        return Lists.newArrayList();  //To change body of implemented methods use File | Settings | File Templates.
+        List<V> myValues = Lists.newArrayList();
+
+        try
+        {
+            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
+                                                           toBytes(QUALIFIER));
+
+            for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
+            {
+                myValues.add((V) deserialize(myResult.getValue(toBytes(COLUMN_FAMILY),toBytes(QUALIFIER))));
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return myValues;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet()
     {
-        return Sets.newHashSet();  //To change body of implemented methods use File | Settings | File Templates.
+        Set<Entry<K,V>> myKeys = Sets.newHashSet();
+
+        try
+        {
+            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
+                                                           toBytes(QUALIFIER));
+
+            for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
+            {
+                myKeys.add(new BigMapEntry<K, V>((K) deserialize(myResult.getRow()),
+                                                 (V) deserialize(myResult.getValue(toBytes(COLUMN_FAMILY),
+                                                                                   toBytes(QUALIFIER)))));
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return myKeys;
     }
 
+    private void updatePuts(
+            final List<Put> aPuts,
+            final Entry<? extends K, ? extends V> aEntry)
+    {
+        Put myPut = new Put(serialize(aEntry.getKey()));
+        myPut.add(toBytes(COLUMN_FAMILY),
+                  toBytes(QUALIFIER), serialize(aEntry.getValue()));
+        aPuts.add(myPut);
+    }
+
+    private boolean deSerializeAndScan(
+            final Object o,
+            final ResultScanner aScanner,
+            final Result aResult)
+    {
+        if (deserialize(aResult.getValue(toBytes(COLUMN_FAMILY),
+                                         toBytes(QUALIFIER))).equals(o))
+        {
+            aScanner.close();
+            return true;
+        }
+        return false;
+    }
 }
