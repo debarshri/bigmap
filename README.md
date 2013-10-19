@@ -31,7 +31,7 @@ Installation
     <artifactId>bigmap</artifactId>
     <version>1.1</version>
 </dependency>
-``
+```
 Example
 =======
 
