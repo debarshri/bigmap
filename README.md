@@ -17,7 +17,21 @@ The following example is for HBase-0.90.6 version.
 Note : BigMap is optimized if you HBase is optimized.
 It is not a magic bullet, it helps embedding these NoSQL seamlessly in java projects
 
+Installation
+============
 
+- For maven users
+    - Git clone https://github.com/debarshri/bigmap
+    - mvn clean install -DskipTests
+    - Dependency can be added as follows : 
+   
+```
+<dependency>
+   <groupId>com.bigmap</groupId>
+    <artifactId>bigmap</artifactId>
+    <version>1.1</version>
+</dependency>
+``
 Example
 =======
 
