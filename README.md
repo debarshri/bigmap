@@ -34,7 +34,9 @@ Installation
 ```
 
 - For non-maven users
-    - Download the [released version](https://github.com/debarshri/bigmap/releases) and export the jar in the classpath   
+    - Download the [released version](https://github.com/debarshri/bigmap/releases) and export the jar in the classpath.
+
+
 Example
 =======
 
