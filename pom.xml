@@ -10,7 +10,7 @@
 
     <groupId>com.bigmap</groupId>
     <artifactId>bigmap</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1</version>
 
     <name>Big Map</name>
     <description>Java Map implementation that wraps HBase, MongoDB and other nosql solutions</description>
@@ -52,16 +52,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
             </plugin>
         </plugins>
     </build>
