@@ -109,7 +109,7 @@ public class BigMapMongoImpl<K, V> implements BigMapMongo<K, V> {
         while(myDBObjects.hasNext())
         {
             DBObject myNext = myDBObjects.next();
-            K myKey = (K) myNext.get("key");
+            K myKey = (K) mongoDeserialize((String)myNext.get("key"));
             myKeySet.add(myKey);
         }
 
@@ -125,7 +125,7 @@ public class BigMapMongoImpl<K, V> implements BigMapMongo<K, V> {
         while(myDBObjects.hasNext())
         {
             DBObject myNext = myDBObjects.next();
-            V myValue = (V) myNext.get("value");
+            V myValue = (V) mongoDeserialize((String)myNext.get("value"));
             myValueSet.add(myValue);
         }
 
@@ -141,8 +141,8 @@ public class BigMapMongoImpl<K, V> implements BigMapMongo<K, V> {
         while(myDBObjects.hasNext())
         {
             DBObject myNext = myDBObjects.next();
-            K myKey = (K) myNext.get("key");
-            V myValue = (V) myNext.get("value");
+            K myKey = (K) mongoDeserialize((String)myNext.get("key"));
+            V myValue = (V) mongoDeserialize((String)myNext.get("value"));
             myKeyValue.add(new BigMapEntry<K, V>(myKey,myValue));
         }
 

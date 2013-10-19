@@ -12,6 +12,7 @@ public class BigMapEntry<K,V> implements Map.Entry<K,V> {
         theKey = aKey;
         theValue = aValue;
     }
+
     @Override
     public K getKey()
     {

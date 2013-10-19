@@ -2,6 +2,7 @@ package com.bigmap.acceptance;
 
 import com.bigmap.*;
 import com.bigmap.conf.*;
+import com.google.common.collect.*;
 import com.mongodb.*;
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.hbase.*;
@@ -198,5 +199,43 @@ public class BigMapsTest {
 
         assertThat(myTestMap2.size()).isEqualTo(0);
         assertThat(myTestMap2).isEmpty();
+    }
+
+    @Test
+    public void shouldGiveKeySetForMongoMap()
+    {
+        Map<String, TestObject> myTestMap2 = BigMaps.createBigMongoMap("testMap5");
+
+        String myTestKey = "testKey";
+        myTestMap2.put(myTestKey,
+                       new TestObject(1));
+        String myOnlyElement = Iterables.getOnlyElement(myTestMap2.keySet());
+
+        assertThat(myOnlyElement).isEqualTo(myTestKey);
+    }
+
+    @Test
+    public void shouldGiveValueSetForMongoMap()
+    {
+        Map<String, TestObject> myTestMap2 = BigMaps.createBigMongoMap("testMap5");
+
+        String myTestKey = "testKey";
+        myTestMap2.put(myTestKey,
+                       new TestObject(1));
+        TestObject myOnlyElement = Iterables.getOnlyElement(myTestMap2.values());
+
+        assertThat(myOnlyElement.getI()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldGiveEntrySetKeyValueSetForMongoMap()
+    {
+        Map<String, TestObject> myTestMap2 = BigMaps.createBigMongoMap("testMap5");
+
+        String myTestKey = "testKey";
+        myTestMap2.put(myTestKey,
+                       new TestObject(1));
+
+        assertThat(Iterables.getOnlyElement(myTestMap2.entrySet())).isNotNull();
     }
 }
