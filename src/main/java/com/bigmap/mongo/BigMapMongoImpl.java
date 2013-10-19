@@ -1,14 +1,16 @@
 package com.bigmap.mongo;
 
-import com.bigmap.*;
 import com.mongodb.*;
 
 import java.util.*;
 
 import static com.bigmap.conf.BigMapConfiguration.*;
+import static com.bigmap.mongo.BigMapMongoUtils.getKeyMongoDBObjects;
+import static com.bigmap.mongo.BigMapMongoUtils.getValueMongoDBObjects;
+import static com.bigmap.mongo.BigMapMongoUtils.mongoDeserialize;
 import static com.bigmap.utils.BigMapUtils.*;
 
-public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
+public class BigMapMongoImpl<K,V> implements BigMapMongo<K,V> {
     private String theDB;
 
     public BigMapMongoImpl(final String theCollectionName)
@@ -19,34 +21,34 @@ public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
     @Override
     public int size()
     {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return (int) getMongoDB().getCollection(theDB).count();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return getMongoDB().getCollection(theDB).count() == 0L;
     }
 
     @Override
     public boolean containsKey(final Object o)
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return getKeyMongoDBObjects(theDB,
+                                    o) != null;
     }
 
     @Override
     public boolean containsValue(final Object o)
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return getValueMongoDBObjects(theDB,
+                                      o) != null;
     }
 
     @Override
     public V get(final Object o)
     {
-        DBCollection myColl = getMongoDBObject().getCollection(theDB);
-        BasicDBObject myDBObject = new BasicDBObject("key",
-                                                     Arrays.toString(serialize(o)));
-        DBCursor myDBObjects = myColl.find(myDBObject);
+        DBCursor myDBObjects = getKeyMongoDBObjects(theDB,
+                                                    o);
 
         return (V) mongoDeserialize((String) myDBObjects.next().get("value"));
 
@@ -58,7 +60,7 @@ public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
             final V aV)
     {
 
-        DBCollection myColl = getMongoDBObject().getCollection(theDB);
+        DBCollection myColl = getMongoDB().getCollection(theDB);
         BasicDBObject myDBObject = new BasicDBObject("key", Arrays.toString(serialize(aK)))
                 .append("value",Arrays.toString(serialize(aV)));
 
@@ -69,54 +71,37 @@ public class BigMapMongoImpl<K,V> implements BigMap<K,V> {
     @Override
     public V remove(final Object o)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public void putAll(final Map<? extends K, ? extends V> aMap)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+      //todo
     }
 
     @Override
     public void clear()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+       //todo
     }
 
     @Override
     public Set<K> keySet()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Collection<V> values()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    private static Object mongoDeserialize(String aSerializeObject)
-    {
-        String[] mySplit = aSerializeObject
-                .substring(1,
-                           aSerializeObject.length() - 1)
-                .split(",");
-
-        byte [] myBytes = new byte[mySplit.length];
-
-        for(int i=0; i < mySplit.length; i++)
-        {
-            myBytes[i] = Byte.parseByte(mySplit[i].trim());
-        }
-
-        return deserialize(myBytes);
+        return null;
     }
 }
 

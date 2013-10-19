@@ -22,16 +22,46 @@ public class BigMaps {
         return new BigMapHBaseImpl<K, V>(aTableName);
     }
 
+    /**
+     *
+     * Creates BigMap on HBase for versions >= 0.92.0
+     *
+     *
+     * @param aTableName
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+
     public static <K,V> BigMap<K,V> createNewBigHBaseMap(String aTableName)
     {
         return new BigMapHBaseImpl<K, V>(aTableName);
     }
 
+    /**
+     *
+     * Creates BigMap on top of MongoDB.
+     * Serialize/Deserializes objects when storing.
+     *
+     * @param aTableName
+     * @param <K>
+     * @param <V>
+     * @return
+     */
     public static <K,V> BigMap<K,V> createBigMongoMap(String aTableName)
     {
         return new BigMapMongoImpl<K, V>(aTableName);
     }
 
+    /**
+     *
+     * Creates a BigMap on top ofCassandra
+     *
+     * @param aTableName
+     * @param <K>
+     * @param <V>
+     * @return
+     */
     public static <K,V> BigMap<K,V> createCassandraMap(String aTableName)
     {
         return null;

@@ -5,9 +5,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 
+import java.io.*;
+
 public class BigMapConfiguration {
 
-    private static final String COLUMN_FAMILY = "BIGMAP";
+    private static final String COLUMN_FAMILY = "bigmap";
     private static Configuration theConfiguration;
     private static DB theMongoDBObject;
 
@@ -21,7 +23,7 @@ public class BigMapConfiguration {
         theMongoDBObject = aMongoDBObject;
     }
 
-    public static DB getMongoDBObject()
+    public static DB getMongoDB()
     {
         return theMongoDBObject;
     }
@@ -42,5 +44,19 @@ public class BigMapConfiguration {
         myHTableDescriptor.addFamily(new HColumnDescriptor(COLUMN_FAMILY));
 
         return myHTableDescriptor;
+    }
+
+    public static void deleteHBaseMap(String aTable) throws IOException
+    {
+        if(getHBaseAdmin().tableExists(aTable))
+        {
+            getHBaseAdmin().disableTable(aTable);
+            getHBaseAdmin().deleteTable(aTable);
+        }
+    }
+
+    public static void deleteMongoMap(String aCollection)
+    {
+        getMongoDB().getCollection(aCollection).drop();
     }
 }

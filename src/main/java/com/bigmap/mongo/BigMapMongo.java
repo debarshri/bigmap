@@ -1,6 +1,6 @@
 package com.bigmap.mongo;
 
-public interface BigMapMongo {
+import com.bigmap.*;
 
-
+public interface BigMapMongo<K,V> extends BigMap<K,V> {
 }
