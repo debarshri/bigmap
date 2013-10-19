@@ -79,6 +79,11 @@ import java.io.*;
 public class TestObject implements Serializable {
 
     private int a;
+    
+    public TestObject(int aA)
+    {
+        a = aA;
+    }
 
     public int getA()
     {
