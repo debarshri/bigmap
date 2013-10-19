@@ -1,5 +1,7 @@
 package com.bigmap.mongo;
 
+import com.bigmap.utils.*;
+import com.google.common.collect.*;
 import com.mongodb.*;
 
 import java.util.*;
@@ -10,7 +12,7 @@ import static com.bigmap.mongo.BigMapMongoUtils.getValueMongoDBObjects;
 import static com.bigmap.mongo.BigMapMongoUtils.mongoDeserialize;
 import static com.bigmap.utils.BigMapUtils.*;
 
-public class BigMapMongoImpl<K,V> implements BigMapMongo<K,V> {
+public class BigMapMongoImpl<K, V> implements BigMapMongo<K, V> {
     private String theDB;
 
     public BigMapMongoImpl(final String theCollectionName)
@@ -59,49 +61,92 @@ public class BigMapMongoImpl<K,V> implements BigMapMongo<K,V> {
             final K aK,
             final V aV)
     {
-
-        DBCollection myColl = getMongoDB().getCollection(theDB);
-        BasicDBObject myDBObject = new BasicDBObject("key", Arrays.toString(serialize(aK)))
-                .append("value",Arrays.toString(serialize(aV)));
-
-        myColl.insert(myDBObject);
-        return aV;  //To change body of implemented methods use File | Settings | File Templates.
+        getMongoDB()
+                .getCollection(theDB)
+                .insert(new BasicDBObject("key",
+                                          Arrays.toString(serialize(aK)))
+                                .append("value",
+                                        Arrays.toString(serialize(aV))));
+        return aV;
     }
 
     @Override
     public V remove(final Object o)
     {
-        return null;
+        getMongoDB()
+                .getCollection(theDB)
+                .findAndRemove(new BasicDBObject("key",
+                                                 Arrays.toString(serialize(o))));
+        return (V) o;
     }
 
     @Override
     public void putAll(final Map<? extends K, ? extends V> aMap)
     {
-      //todo
+        for (Map.Entry<? extends K, ? extends V> myEntry : aMap.entrySet())
+        {
+            DBCollection myColl = getMongoDB().getCollection(theDB);
+            BasicDBObject myDBObject = new BasicDBObject("key",
+                                                         Arrays.toString(serialize(myEntry.getKey())))
+                    .append("value",
+                            Arrays.toString(serialize(myEntry.getValue())));
+            myColl.insert(myDBObject);
+        }
     }
 
     @Override
     public void clear()
     {
-       //todo
+        getMongoDB().getCollection(theDB).drop();
     }
 
     @Override
     public Set<K> keySet()
     {
-        return null;
+        Set<K> myKeySet = Sets.newHashSet();
+        DBCursor myDBObjects = getMongoDB().getCollection(theDB).find();
+
+        while(myDBObjects.hasNext())
+        {
+            DBObject myNext = myDBObjects.next();
+            K myKey = (K) myNext.get("key");
+            myKeySet.add(myKey);
+        }
+
+        return myKeySet;
     }
 
     @Override
     public Collection<V> values()
     {
-        return null;
+        Set<V> myValueSet = Sets.newHashSet();
+        DBCursor myDBObjects = getMongoDB().getCollection(theDB).find();
+
+        while(myDBObjects.hasNext())
+        {
+            DBObject myNext = myDBObjects.next();
+            V myValue = (V) myNext.get("value");
+            myValueSet.add(myValue);
+        }
+
+        return myValueSet;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet()
     {
-        return null;
+        Set<Entry<K,V>> myKeyValue = Sets.newHashSet();
+        DBCursor myDBObjects = getMongoDB().getCollection(theDB).find();
+
+        while(myDBObjects.hasNext())
+        {
+            DBObject myNext = myDBObjects.next();
+            K myKey = (K) myNext.get("key");
+            V myValue = (V) myNext.get("value");
+            myKeyValue.add(new BigMapEntry<K, V>(myKey,myValue));
+        }
+
+        return myKeyValue;
     }
 }
 

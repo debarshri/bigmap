@@ -10,7 +10,7 @@
 
     <groupId>com.bigmap</groupId>
     <artifactId>bigmap</artifactId>
-    <version>1</version>
+    <version>1.1-SNAPSHOT</version>
 
     <name>Big Map</name>
     <description>Java Map implementation that wraps HBase, MongoDB and other nosql solutions</description>
