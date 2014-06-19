@@ -28,8 +28,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
     {
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
             Iterator<Result> myIterator = myScanner.iterator();
 
             return Iterators.size(myIterator);
@@ -41,6 +40,8 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
         return 0;
     }
+
+
 
     @Override
     public boolean isEmpty()
@@ -80,8 +81,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
     {
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
@@ -178,8 +178,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
     {
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
@@ -202,8 +201,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
@@ -225,12 +223,12 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
-                myValues.add((V) deserialize(myResult.getValue(toBytes(COLUMN_FAMILY),toBytes(QUALIFIER))));
+                myValues.add((V) deserialize(myResult.getValue(toBytes(COLUMN_FAMILY),
+                                                               toBytes(QUALIFIER))));
             }
         }
         catch (IOException e)
@@ -248,8 +246,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
         try
         {
-            ResultScanner myScanner = theHTable.getScanner(toBytes(COLUMN_FAMILY),
-                                                           toBytes(QUALIFIER));
+            ResultScanner myScanner = getResults();
 
             for (Result myResult = myScanner.next(); myResult != null; myResult = myScanner.next())
             {
@@ -288,5 +285,11 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
             return true;
         }
         return false;
+    }
+
+    private ResultScanner getResults() throws IOException
+    {
+        return theHTable.getScanner(toBytes(COLUMN_FAMILY),
+                                    toBytes(QUALIFIER));
     }
 }

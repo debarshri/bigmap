@@ -238,4 +238,10 @@ public class BigMapsTest {
 
         assertThat(Iterables.getOnlyElement(myTestMap2.entrySet())).isNotNull();
     }
+
+    @Test
+    public void allowingLamdajOperations()
+    {
+
+    }
 }

@@ -52,9 +52,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase</artifactId>
-            <version>0.90.4</version>
+            <version>0.90.5</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -91,9 +91,19 @@
             <version>2.10.1</version>
         </dependency>
         <dependency>
-            <groupId>me.prettyprint</groupId>
-            <artifactId>hector-core</artifactId>
-            <version>0.8.0-2</version>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-core</artifactId>
+            <version>1.56.43</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-thrift</artifactId>
+            <version>1.56.43</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-cassandra</artifactId>
+            <version>1.56.43</version>
         </dependency>
     </dependencies>
 

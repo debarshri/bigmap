@@ -2,7 +2,6 @@ package com.bigmap.acceptance;
 
 import com.bigmap.*;
 import org.apache.hadoop.hbase.*;
-import org.junit.*;
 
 import java.util.*;
 
@@ -21,9 +20,9 @@ public class Benchmark {
 
         long endTime = System.currentTimeMillis();
 
-        System.out.println(String.format("Time taken to load 10000 records - %ds",(endTime - startTime)/1000));
+        System.out.println(String.format("Time taken to load 10000 records - %dms",(endTime - startTime)));
 
-        Map<String, String> myBigHBaseMap = BigMaps.createBigHBaseMap(myTableMap);
+        Map<String, String> myBigHBaseMap = BigMaps.createNewBigHBaseMap(myTableMap);
 
         long startTime2 = System.currentTimeMillis();
 

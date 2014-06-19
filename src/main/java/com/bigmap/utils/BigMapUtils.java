@@ -22,6 +22,10 @@ public class BigMapUtils {
     }
 
     public static Object deserialize(byte[] bytes) {
+        if(bytes == null)
+        {
+            return null;
+        }
         ByteArrayInputStream b = new ByteArrayInputStream(bytes);
         ObjectInputStream o;
         try
