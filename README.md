@@ -29,7 +29,7 @@ Installation
 <dependency>
    <groupId>com.bigmap</groupId>
     <artifactId>bigmap</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
 </dependency>
 ```
 
