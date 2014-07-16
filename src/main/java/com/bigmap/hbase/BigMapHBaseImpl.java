@@ -3,6 +3,7 @@ package com.bigmap.hbase;
 import com.bigmap.utils.*;
 import com.google.common.collect.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.*;
 
 import java.io.*;
 import java.util.*;
@@ -11,12 +12,13 @@ import static com.bigmap.hbase.BigMapHBaseUtils.createOrGet;
 import static com.bigmap.utils.BigMapUtils.deserialize;
 import static com.bigmap.utils.BigMapUtils.serialize;
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
+import static org.apache.hadoop.hbase.util.Bytes.toString;
 
 public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
 
-    private static final String COLUMN_FAMILY = "bigmap";
-    private static final String QUALIFIER = "value";
-    private HTable theHTable;
+    protected static final String COLUMN_FAMILY = "bigmap";
+    protected static final String QUALIFIER = "value";
+    protected HTable theHTable;
 
     public BigMapHBaseImpl(final String aTableName)
     {
@@ -123,6 +125,7 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
             final V aV)
     {
         Put myPut = new Put(serialize(aK));
+
         myPut.add(toBytes(COLUMN_FAMILY),
                   toBytes(QUALIFIER), serialize(aV));
         try
@@ -291,5 +294,11 @@ public class BigMapHBaseImpl<K, V> implements BigMapHBase<K, V> {
     {
         return theHTable.getScanner(toBytes(COLUMN_FAMILY),
                                     toBytes(QUALIFIER));
+    }
+
+    @Override
+    public HTable getHTable()
+    {
+        return theHTable;
     }
 }

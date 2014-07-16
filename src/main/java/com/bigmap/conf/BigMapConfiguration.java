@@ -9,7 +9,7 @@ import java.io.*;
 
 public class BigMapConfiguration {
 
-    private static final String COLUMN_FAMILY = "bigmap";
+    private static final String aColumnFamily = "bigmap";
     private static Configuration theConfiguration;
     private static DB theMongoDBObject;
 
@@ -41,7 +41,7 @@ public class BigMapConfiguration {
     public static HTableDescriptor getHTableDescriptor(String aTableName)
     {
         HTableDescriptor myHTableDescriptor = new HTableDescriptor(aTableName);
-        myHTableDescriptor.addFamily(new HColumnDescriptor(COLUMN_FAMILY));
+        myHTableDescriptor.addFamily(new HColumnDescriptor(aColumnFamily));
 
         return myHTableDescriptor;
     }

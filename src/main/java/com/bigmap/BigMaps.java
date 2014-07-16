@@ -38,6 +38,16 @@ public class BigMaps {
         return new BigMapHBaseImpl<K, V>(aTableName);
     }
 
+    public static <K,V> BigMap<K,V> createNewBigHBaseMapWithRawKeys(String aTableName)
+    {
+        return new BigMapHBaseImpl<K, V>(aTableName);
+    }
+
+    public static <K,V> BigMap<K,V> createNewBigHBaseMapWithRawKeyValues(String aTableName)
+    {
+        return new BigMapHBaseImpl<K, V>(aTableName);
+    }
+
     /**
      *
      * Creates BigMap on top of MongoDB.

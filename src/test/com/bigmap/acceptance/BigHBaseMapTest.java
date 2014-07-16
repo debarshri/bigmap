@@ -1,7 +1,6 @@
 package com.bigmap.acceptance;
 
 import com.bigmap.*;
-import com.mongodb.*;
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.hbase.*;
 import org.junit.*;
@@ -10,7 +9,6 @@ import java.io.*;
 import java.util.*;
 
 import static com.bigmap.conf.BigMapConfiguration.deleteHBaseMap;
-import static com.bigmap.conf.BigMapConfiguration.deleteMongoMap;
 import static com.bigmap.conf.BigMapConfiguration.setConfiguration;
 import static org.fest.assertions.Assertions.assertThat;
 
