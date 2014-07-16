@@ -7,6 +7,8 @@ It makes migration of NoSQL databases easy.
 
 The idea is also to give Hazelcast run for its money.
 
+![parkloco](http://parkloco.com/img/logo.png)
+
 Prerequisite
 ==========
 
